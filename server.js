@@ -132,9 +132,58 @@ function addDepartments() {
     });
 }
  
-function addRoles() {}
+function addRoles() {
+    inquirer
+    .prompt({
+      name: "roles",
+      type: "confirm",
+      message: "Would you like to add roles?",
+    })
+    .then(function (answer) {
+      if (answer.roles === true) {
+        inquirer
+          .prompt({
+            name: "rolesInput",
+            type: "input",
+            message: "enter role name",
+          })
+          .then(function (answer) {
+            connection.query(
+              `INSERT INTO role_table (title) VALUES ("${answer.rolesInput}");`, function (err, response){
+                  console.log(response)
+                  runSearch()
+            })
+          });
+      }
+    });
+}
 
-function addEmployees() {}
+function addEmployees() {
+    inquirer
+    .prompt({
+        name: "first_name",
+        type: "input",
+        message: "What is the employee's first name?",
+    },
+    {
+        name: "last_name",
+        type: "input",
+        message: "What is the employee's last name?",
+
+        },
+    {
+        name: "role",
+        type: "input",
+        message: "What is the employee's role?",
+    })
+    .then(function(answer){
+        connection.query(
+            `INSERT INTO role_table (title) VALUES ("${answer.rolesInput}");`, function (err, response){
+                console.log(response)
+             runSearch()
+    })
+});
+}
 
 function viewDepartments() {
       var query = "SELECT employees.id, employees.first_name, employees.last_name, department.name AS department, role_table.title, role_table.salary FROM employees INNER JOIN role_table ON employees.role_id = role_table.role_id INNER JOIN department ON role_table.department_id = department.department_id";
